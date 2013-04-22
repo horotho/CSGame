@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -21,7 +22,7 @@ public class BoardGui extends JFrame
 		{
 			for(int j = 0; j < 6; j++)
 			{	
-				Square sq = new Square(i, j, 60);
+				Square sq = new Square(new Color(0, 180, 200), i, j, 60);
 				sq.addMouseListener(new Handler());
 				squares[i][j] = sq;
 				this.add(sq);
@@ -38,20 +39,8 @@ public class BoardGui extends JFrame
 		@Override
 		public void mouseClicked(MouseEvent arg0)
 		{
-			Square sq = ((Square) arg0.getSource());
-			int col = sq.getCol(), i = 5;
-			
-			while(i > -1)
-			{
-				System.out.println(i);
-				if(!squares[i][col].getFilled())
-				{
-					squares[i][col].paint();
-					break;
-				}
-				
-				i--;
-			}
+			Square sq = (Square) arg0.getSource();
+			System.out.println("Row: " + sq.getRow() + " Col: " + sq.getCol());
 			
 		}
 
@@ -84,4 +73,5 @@ public class BoardGui extends JFrame
 		}
 		
 	}
+
 }
