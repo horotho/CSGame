@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 
@@ -23,6 +24,7 @@ public class BoardGui extends JFrame
     public Square[][] squares = new Square[6][7];
     public boolean playerSwitch = true;
     public JLabel player;
+    public JOptionPane chooseNewGame;
 	
 	public BoardGui()
 	{
@@ -78,17 +80,7 @@ public class BoardGui extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				for(int i = 0; i < 6; i++)
-				{
-					for(int j = 0; j < 7; j++)
-					{
-						squares[i][j].paintOriginal();
-					}
-				}
-				
-				playerSwitch = true;
-				player.setText("Player One");
-				System.out.println("Clicked new game.");
+				startNewGame();
 			}
 		});
 		
@@ -105,6 +97,20 @@ public class BoardGui extends JFrame
 		this.setVisible(true);
 		
 	}
+	
+	public void startNewGame()
+	{
+		for(int i = 0; i < 6; i++)
+		{
+			for(int j = 0; j < 7; j++)
+			{
+				squares[i][j].paintOriginal();
+			}
+		}
+		
+		playerSwitch = true;
+		player.setText("Player One");
+	}
 
 	public boolean IsFour(Square new_square) {
 
@@ -118,7 +124,7 @@ public class BoardGui extends JFrame
 			for(int j = J-1; j < J+2; j++)
 			{
 
-				if( !(i == I && j ==j)
+				if( !(i == I && j == J)
 				&& 0 <= i && i < 6
 				&& 0 <= j && j < 7
                 && squares[i][j].getFilled()
@@ -176,6 +182,7 @@ public class BoardGui extends JFrame
 				if(!squares[i][col].getFilled())
 				{
 					squares[i][col].paint();
+					squares[0][col].setIndicator(true);
 					player.setText(playerSwitch ? "Player Two" : "Player One");
 					break;
 				}
@@ -198,17 +205,11 @@ public class BoardGui extends JFrame
 			
 			if(IsFour(squares[I][col]))
 			{
-				for(i = 0; i < 6; i++)
-				{
-					for(int j = 0; j < 7; j++)
-					{
-						squares[i][j].paintOriginal();
-					}
-				}
-				
-				playerSwitch = true;
-				player.setText("Player One");
-				System.out.println("Clicked new game.");
+				String winnerText = squares[I][col].getColor() == Color.red ? "Player One Wins!" : "Player Two Wins!";
+				player.setText(winnerText);
+				Object select = JOptionPane.showConfirmDialog(squares[I][col].getParent(), "Start a New Game?", winnerText, 0);
+				if((int)select == JOptionPane.YES_OPTION) startNewGame();
+				else System.exit(0);
 			}
 			
 			
@@ -217,14 +218,20 @@ public class BoardGui extends JFrame
 		@Override
 		public void mouseEntered(MouseEvent arg0)
 		{
-			// TODO Auto-generated method stub
+			Square sq = ((Square) arg0.getSource());
+			int col = sq.getCol();
+			
+			squares[0][col].setIndicator(true);
 			
 		}
 
 		@Override
 		public void mouseExited(MouseEvent arg0)
 		{
-			// TODO Auto-generated method stub
+			Square sq = ((Square) arg0.getSource());
+			int col = sq.getCol();
+			
+			squares[0][col].setIndicator(false);
 			
 		}
 

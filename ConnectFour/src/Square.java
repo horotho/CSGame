@@ -2,6 +2,8 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.geom.Ellipse2D;
 
 import javax.swing.JPanel;
@@ -9,9 +11,9 @@ import javax.swing.JPanel;
 
 public class Square extends JPanel
 {
-	private boolean drawn = false, filled = false;
+	private boolean drawn = false, filled = false, triangle = false;
 	private int row, col, size;
-	private Color color;
+	private Color color, indicatorColor;
 	private Ellipse2D.Double ellipse;
 	private GradientPaint gradient = 
 			new GradientPaint(0,0, Color.red, 50, 50, Color.yellow, true);
@@ -24,6 +26,15 @@ public class Square extends JPanel
 		this.row = row;
 		this.col = col;
 		color = Color.red;
+		indicatorColor = Color.red;
+	}
+	
+	public void setIndicator(boolean ind)
+	{
+		Graphics2D g2 = (Graphics2D) this.getGraphics();
+		triangle = ind ? true : false;
+		paintComponent(g2);
+		repaint();
 	}
 	
 	public void paint()
@@ -38,6 +49,8 @@ public class Square extends JPanel
 	{
 		Graphics2D g2 = (Graphics2D) this.getGraphics();
 		paintComponent(g2);
+		color = Color.red;
+		indicatorColor = Color.red;
 		filled = false;
 		drawn = false;
 		repaint();
@@ -65,6 +78,18 @@ public class Square extends JPanel
 		{ 
 			g2.setPaint(filled ? color : gradient);
 			g2.fill(ellipse);
+		}
+		
+		if(triangle)
+		{
+			g2.setPaint(indicatorColor);
+			
+			int[] xs = {width()/4, 3*width()/4, width()/2};
+			int[] ys = {0, 0, height()/4};
+			Polygon triangle = new Polygon(xs, ys, xs.length);
+			
+			g2.fill(triangle);
+
 		}
 		
 	}
@@ -97,6 +122,7 @@ public class Square extends JPanel
 	public void setColor(Color c)
 	{
 		color = c;
+		indicatorColor = c;
 	}
 	
 	public Color getColor()

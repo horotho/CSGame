@@ -1,3 +1,5 @@
+import javax.swing.SwingUtilities;
+
 
 public class runner
 {
@@ -7,8 +9,13 @@ public class runner
 	 */
 	public static void main(String[] args)
 	{
-		BoardGui gui = new BoardGui();
-
+		SwingUtilities.invokeLater(new Runnable() 
+		{
+		    public void run() 
+		    {
+		      BoardGui gui = new BoardGui();
+		    }
+		});
 	}
 
 }
