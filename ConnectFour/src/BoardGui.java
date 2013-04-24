@@ -80,7 +80,7 @@ public class BoardGui extends JFrame
 			{
 				for(int i = 0; i < 6; i++)
 				{
-					for(int j = 0; j < 6; j++)
+					for(int j = 0; j < 7; j++)
 					{
 						squares[i][j].paintOriginal();
 					}
@@ -189,7 +189,7 @@ public class BoardGui extends JFrame
 			
 			for(i = 0; i < 6; i++)
 			{
-				for(int j = 0; j < 6; j++)
+				for(int j = 0; j < 7; j++)
 				{
 					if(!squares[i][j].getFilled())
 					squares[i][j].setColor(playerSwitch ? Color.red : Color.black);
@@ -200,7 +200,7 @@ public class BoardGui extends JFrame
 			{
 				for(i = 0; i < 6; i++)
 				{
-					for(int j = 0; j < 6; j++)
+					for(int j = 0; j < 7; j++)
 					{
 						squares[i][j].paintOriginal();
 					}
