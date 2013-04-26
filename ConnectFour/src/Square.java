@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 
 public class Square extends JPanel
 {
+	// Private variables of a square object, many of these are used to properly display the board
 	private boolean drawn = false, filled = false, triangle = false;
 	private int row, col, size;
 	private Color color, indicatorColor;
@@ -20,6 +21,7 @@ public class Square extends JPanel
 	private GradientPaint gradient2 = 
 			new GradientPaint(0,0, new Color(0, 180, 200), 100, 100, Color.blue, true);
 
+	// Constructor, sets the row, column, and size of the square
 	public Square(int row, int col, int size)
 	{
 		this.size = size;
@@ -29,6 +31,7 @@ public class Square extends JPanel
 		indicatorColor = Color.red;
 	}
 	
+	// This code controls the player indicator at the top of the board. Its color is reflected by the current players turn
 	public void setIndicator(boolean ind, Color c)
 	{
 		Graphics2D g2 = (Graphics2D) this.getGraphics();
@@ -38,6 +41,7 @@ public class Square extends JPanel
 		repaint();
 	}
 	
+	// Paints the square, to appear like the connect four board. It also reflects the players move. 
 	public void paint()
 	{
 		Graphics2D g2 = (Graphics2D) this.getGraphics();
@@ -46,6 +50,7 @@ public class Square extends JPanel
 		repaint();
 	}
 	
+	// The initial paint function, paints the squares a neutral color and sets them to not filled
 	public void paintOriginal()
 	{
 		Graphics2D g2 = (Graphics2D) this.getGraphics();
@@ -57,7 +62,7 @@ public class Square extends JPanel
 		repaint();
 	}
 
-	
+	// The method for drawing the different components on the board
 	@Override
 	public void paintComponent(Graphics g)
 	{
@@ -94,6 +99,10 @@ public class Square extends JPanel
 		}
 		
 	}
+	
+	
+	// Getter and setter methods//
+	
 	
 	public int height()
 	{

@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+
+import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
@@ -15,12 +17,13 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 
 public class BoardGui extends JFrame
 {
-	
+	// Declaring public variables
     public Square[][] squares = new Square[6][7];
     public boolean playerSwitch = true;
     public JLabel player;
@@ -28,17 +31,20 @@ public class BoardGui extends JFrame
 	
 	public BoardGui()
 	{
+		// Calls the inherited constructor for JFrame, and sets the JFrame's size, function on exit, and grid layout
 		super("Connect Four");
 		this.setBounds(0, 0, 700, 700);
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		
+		// Creates the panel of squares
 		JPanel gameboard = new JPanel();
 		gameboard.setLayout(new GridLayout(6,6));
 		gameboard.setSize(new Dimension(600,600));
 		gameboard.setPreferredSize(new Dimension(600,600));
 		
+		// Creates a mouse listener for each square, then adds it to the game board
 		for(int i = 0; i < 6; i++)
 		{
 			for(int j = 0; j < 7; j++)
@@ -50,6 +56,7 @@ public class BoardGui extends JFrame
 			}
 		}
 		
+		
 		c.gridx = 0;
 		c.gridy = 1;
 		c.weightx = 1;
@@ -58,6 +65,7 @@ public class BoardGui extends JFrame
 		
 		this.add(gameboard, c);
 		
+		// Creating player one
 		JPanel info = new JPanel();
 		player = new JLabel("Player One");
 		player.setFont(new Font("Times New Roman", Font.BOLD, 28));
@@ -71,8 +79,10 @@ public class BoardGui extends JFrame
 		
 		this.add(info, c);
 		
+		// Adds the options bar with the New Game and Two-player/AI options
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("Options");
+		JMenu ai_menu = new JMenu("AI");
 		
 		JMenuItem newGame = new JMenuItem("New Game");
 		newGame.setAccelerator(KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_N, java.awt.Event.CTRL_MASK));
@@ -84,7 +94,39 @@ public class BoardGui extends JFrame
 			}
 		});
 		
+		
 		menu.add(newGame);
+		menu.addSeparator();
+		
+		ButtonGroup group = new ButtonGroup();
+		
+		JMenuItem twoPlayer = new JRadioButtonMenuItem("Two Player");
+		twoPlayer.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				
+			}
+		});
+		twoPlayer.setSelected(true);
+		
+		group.add(twoPlayer);
+		ai_menu.add(twoPlayer);
+		
+		JMenuItem ai = new JRadioButtonMenuItem("Computer");
+		ai.addActionListener(new ActionListener()
+		{
+			public void actionPerformed(ActionEvent e)
+			{
+				
+			}
+		});
+		
+		group.add(ai);
+		ai_menu.add(ai);
+		
+		menu.add(ai_menu);
+		
 		menuBar.add(menu);
 		
 		c.gridx = 0;
@@ -98,6 +140,7 @@ public class BoardGui extends JFrame
 		
 	}
 	
+	// Sets each square to the original state and sets the player to player one
 	public void startNewGame()
 	{
 		for(int i = 0; i < 6; i++)
@@ -112,13 +155,16 @@ public class BoardGui extends JFrame
 		player.setText("Player One");
 	}
 
+	// Function that checks for four in a row
 	public boolean IsFour(Square new_square) {
 
+		// Collects information about the square that was just placed
 		Color color = new_square.getColor();
-
 		int I = new_square.getRow();
 		int J = new_square.getCol();
 
+		// A nested for loop that checks all adjacent squares for a square of the same color. The system will then know the maximum number
+		//  of adjacent, same colored squares. 
 		for(int i = I-1; i < I+2; i++)
 		{
 			for(int j = J-1; j < J+2; j++)
@@ -168,6 +214,7 @@ public class BoardGui extends JFrame
 
 	}
 	
+	// The function call for the mouse listener. When a square is clicked, the following code is implemented on this square.
 	private class Handler implements MouseListener
 	{
 
@@ -177,6 +224,7 @@ public class BoardGui extends JFrame
 			Square sq = ((Square) arg0.getSource());
 			int col = sq.getCol(), i = 5;
 			
+			// traverses down the connect four board until a piece is found
 			while(i >= 0)
 			{
 				if(!squares[i][col].getFilled())
@@ -202,6 +250,7 @@ public class BoardGui extends JFrame
 				}
 			}
 			
+			// If four in a row are found, display winner and ask for new game
 			if(IsFour(squares[I][col]))
 			{
 				String winnerText = squares[I][col].getColor() == Color.red ? "Player One Wins!" : "Player Two Wins!";
