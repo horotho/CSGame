@@ -28,8 +28,7 @@ public class BoardGui extends JFrame
     public boolean playerSwitch = true;
     public JLabel player;
     public JOptionPane chooseNewGame;
-    public boolean AI;
-    
+	
 	public BoardGui()
 	{
 		// Calls the inherited constructor for JFrame, and sets the JFrame's size, function on exit, and grid layout
@@ -80,7 +79,7 @@ public class BoardGui extends JFrame
 		
 		this.add(info, c);
 		
-		// Adds the options bar with the New Game
+		// Adds the options bar with the New Game and Two-player/AI options
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("Options");
 		JMenu ai_menu = new JMenu("AI");
@@ -107,19 +106,15 @@ public class BoardGui extends JFrame
 		this.add(menuBar, c);
 				
 		this.setVisible(true);
-		this.startNewGame();
 		
 	}
 	
 	// Sets each square to the original state and sets the player to player one
 	public void startNewGame()
 	{
-		Object[] options = {"1 Player", "2 Player"};
-		Object select = JOptionPane.showOptionDialog(squares[1][1].getParent(), "Select Game Type", "Game Type", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0] );
-		if(select.toString() == options[1].toString())  AI = false;
-		else AI = true;
-		
-		System.out.println(AI);
+		Object select = JOptionPane.showConfirmDialog(squares[1][1].getParent(), "Select Game Type", "Game Type", 0);
+		if((int)select == JOptionPane.YES_OPTION) startNewGame();
+		else System.exit(0);
 		
 		for(int i = 0; i < 6; i++)
 		{
