@@ -105,14 +105,7 @@ public class BoardGui extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				if(((JRadioButtonMenuItem)(e.getSource())).isSelected())
-				{
-					Object select = JOptionPane.showConfirmDialog((squares[1][1]).getParent(), "Start a new Two Player Game?", "New Game", 0);
-					if((int)select == JOptionPane.YES_OPTION) 
-					{
-						startNewGame();
-					}
-				}
+				
 			}
 		});
 		twoPlayer.setSelected(true);
@@ -125,14 +118,7 @@ public class BoardGui extends JFrame
 		{
 			public void actionPerformed(ActionEvent e)
 			{
-				if(((JRadioButtonMenuItem)(e.getSource())).isSelected())
-				{
-					Object select = JOptionPane.showConfirmDialog((squares[1][1]).getParent(), "Start a new AI Game?", "New Game", 0);
-					if((int)select == JOptionPane.YES_OPTION) 
-					{
-						startNewGame();
-					}
-				}
+				
 			}
 		});
 		
