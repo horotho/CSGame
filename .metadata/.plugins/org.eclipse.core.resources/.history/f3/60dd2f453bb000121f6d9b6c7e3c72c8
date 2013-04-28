@@ -119,6 +119,7 @@ public class BoardGui extends JFrame
 		if(((int) select) == 1)  AI = false;
 		else AI = true;
 		
+		System.out.println(select.toString());
 		System.out.println(AI);
 		
 		for(int i = 0; i < 6; i++)
