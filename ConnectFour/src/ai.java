@@ -1,0 +1,79 @@
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButtonMenuItem;
+import javax.swing.KeyStroke;
+
+public class ai extends BoardGui
+{
+	
+	public int howMany(Square new_square) 
+	{
+		// Collects information about the square that was just placed
+		Color color = new_square.getColor();
+		int I = new_square.getRow();
+		int J = new_square.getCol();
+		int howMany = 0;
+
+		// A nested for loop that checks all adjacent squares for a square of the same color. The system will then know the maximum number
+		//  of adjacent, same colored squares. 
+		for(int i = I-1; i < I+2; i++)
+		{
+			for(int j = J-1; j < J+2; j++)
+			{
+				if( !(i == I && j == J)
+				&& 0 <= i && i < 6
+				&& 0 <= j && j < 7
+                && squares[i][j].getFilled()
+				&& color == squares[i][j].getColor() )
+				{
+					howMany = 2;
+					int next_i = I + 2*(i-I);
+					int next_j = J + 2*(j-J);
+
+					if( 0 <= next_i && next_i < 6
+					&& 0 <= next_j && next_j < 7
+                	&& squares[next_i][next_j].getFilled()
+					&& color == squares[next_i][next_j].getColor() )
+					{
+						howMany = 3;
+						int next_next_i = I + 3*(i-I);
+						int next_next_j = J + 3*(j-J);
+
+						int prev_i = I - (i-I);
+						int prev_j = J - (j-J);
+
+						if( (0 <= next_next_i && next_next_i < 6
+							&& 0 <= next_next_j && next_next_j < 7
+                			&& squares[next_next_i][next_next_j].getFilled()
+							&& color == squares[next_next_i][next_next_j].getColor())
+						|| ( 0 <= prev_i && prev_i < 6
+							&& 0<= prev_j && prev_j < 7
+                			&& squares[prev_i][prev_j].getFilled()
+							&& color == squares[prev_i][prev_j].getColor() ) )
+						{
+							howMany = 4;
+						}
+					}
+				}
+			}
+		}
+	return howMany;
+	}
+}
