@@ -74,28 +74,12 @@ public class ai extends BoardGui
 				}
 			}
 		}
-		return howMany;
+	return howMany;
 	}
 	
 	public void move()
 	{
 		// Make an array containing streak lengths of each index
-		int[][] streak = new int[6][7];
-		for(int i = 0; i < 6; i++)
-		{
-			for(int j = 0; j < 7; j++)
-			{
-				streak[i][j] = howMany(squares[i][j]);
-			}
-		}
-		// Get first available place in each column
-		int[] avalibleSpot = new int[7];
-		for(int j = 0; j < 7; j++)
-		{
-			for(int i = 0; !squares[i][j].getFilled(); i++)
-			{
-				avalibleSpot[j] = i;
-			}
-		}
+		int streaks[6][7];
 	}
 }

@@ -97,5 +97,6 @@ public class ai extends BoardGui
 				avalibleSpot[j] = i;
 			}
 		}
+		
 	}
 }

@@ -88,14 +88,7 @@ public class ai extends BoardGui
 				streak[i][j] = howMany(squares[i][j]);
 			}
 		}
-		// Get first available place in each column
-		int[] avalibleSpot = new int[7];
-		for(int j = 0; j < 7; j++)
-		{
-			for(int i = 0; !squares[i][j].getFilled(); i++)
-			{
-				avalibleSpot[j] = i;
-			}
-		}
+		// Look at first available place in each column and determine streaks.
+		int[][] possibleSpots = new int[6][7];
 	}
 }

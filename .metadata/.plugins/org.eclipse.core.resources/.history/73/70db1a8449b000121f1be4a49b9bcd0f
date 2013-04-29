@@ -238,20 +238,7 @@ public class BoardGui extends JFrame
 				else System.exit(0);
 			}
 			
-			if(AI)
-			{
-				// ai.move();
-			}
 			
-			// If four in a row are found, display winner and ask for new game
-			if(IsFour(squares[I][col]))
-			{
-				String winnerText = squares[I][col].getColor() == Color.red ? "Player One Wins!" : "Player Two Wins!";
-				player.setText(winnerText);
-				Object select = JOptionPane.showConfirmDialog(squares[I][col].getParent(), "Start a New Game?", winnerText, 0);
-				if((int)select == JOptionPane.YES_OPTION) startNewGame();
-				else System.exit(0);
-			}
 		}
 
 		@Override
