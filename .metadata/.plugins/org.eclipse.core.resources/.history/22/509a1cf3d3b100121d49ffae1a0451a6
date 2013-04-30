@@ -184,86 +184,12 @@ public class BoardGui extends JFrame
 						}
 					}
 				}
+
 			}
 		}
+
 	return false;
-	}
-	
-	// Moves for the AI
-	public void move()
-	{
-		// Make an array containing streak lengths of each index
-		int[][] streak = new int[6][7];
-		for(int i = 0; i < 6; i++)
-		{
-			for(int j = 0; j < 7; j++)
-			{
-				streak[i][j] = howMany(squares[i][j]);
-			}
-		}
-		// Get first available place in each column
-		int[] avalibleSpot = new int[7];
-		for(int j = 0; j < 7; j++)
-		{
-			for(int i = 0; !squares[i][j].getFilled(); i++)
-			{
-				avalibleSpot[j] = i;
-			}
-		}
-	}
-	
-	public int howMany(Square new_square) 
-	{
-		// Collects information about the square that was just placed
-		Color color = new_square.getColor();
-		int I = new_square.getRow();
-		int J = new_square.getCol();
-		int howMany = 0;
 
-		// A nested for loop that checks all adjacent squares for a square of the same color. The system will then know the maximum number
-		//  of adjacent, same colored squares. 
-		for(int i = I-1; i < I+2; i++)
-		{
-			for(int j = J-1; j < J+2; j++)
-			{
-				if( !(i == I && j == J)
-				&& 0 <= i && i < 6
-				&& 0 <= j && j < 7
-                && squares[i][j].getFilled()
-				&& color == squares[i][j].getColor() )
-				{
-					howMany = 2;
-					int next_i = I + 2*(i-I);
-					int next_j = J + 2*(j-J);
-
-					if( 0 <= next_i && next_i < 6
-					&& 0 <= next_j && next_j < 7
-                	&& squares[next_i][next_j].getFilled()
-					&& color == squares[next_i][next_j].getColor() )
-					{
-						howMany = 3;
-						int next_next_i = I + 3*(i-I);
-						int next_next_j = J + 3*(j-J);
-
-						int prev_i = I - (i-I);
-						int prev_j = J - (j-J);
-
-						if( (0 <= next_next_i && next_next_i < 6
-							&& 0 <= next_next_j && next_next_j < 7
-                			&& squares[next_next_i][next_next_j].getFilled()
-							&& color == squares[next_next_i][next_next_j].getColor())
-						|| ( 0 <= prev_i && prev_i < 6
-							&& 0<= prev_j && prev_j < 7
-                			&& squares[prev_i][prev_j].getFilled()
-							&& color == squares[prev_i][prev_j].getColor() ) )
-						{
-							howMany = 4;
-						}
-					}
-				}
-			}
-		}
-		return howMany;
 	}
 	
 	// The function call for the mouse listener. When a square is clicked, the following code is implemented on this square.
