@@ -221,112 +221,23 @@ public class BoardGui extends JFrame
 				// checks what's below, diagonal to right up/down, right
 				if(i > 3) // check below if it matters and exists
 				{
-					if(squares[i+1][j].getColor() == Color.black && squares[i+2][j].getColor() == Color.black) // it's ours
+					if(squares[i][j].getColor() == Color.red)
 					{
-						if(streak[i+1][j] == 3)
+						
+						else if(streak[i][j] > 2)
 						{
-							// add to pq with highest priority [this will make us win]
-						}
-						else if(streak[i+1][j] >= 2)
-						{
-							// add to pq with med priority [this might make us win later]
-						}
-					}
-					else if(squares[i+1][j].getColor() == Color.red && squares[i+2][j].getColor() == Color.red) // it's the opponents
-					{
-						if(streak[i+1][j] == 3)
-						{
-							// add to pq with almost highest priority [this will make them not win]
-						}
-						else if(streak[i+1][j] >= 2)
-						{
-							// add to pq with med priority [this might piss them off a little]
-						}
-					}
-				}
-				else if(squares[i][j+1].getFilled() && squares[i][j+2].getFilled()) // check spot to the right exists and matters
-				{
-					if(squares[i][j+1].getColor() == Color.black && squares[i][j+2].getColor() == Color.black) // it's ours
-					{
-						if(streak[i][j+1] == 3)
-						{
-							// add to pq with highest priority [this will make us win]
-						}
-						else if(streak[i][j+1] >= 2)
-						{
-							// add to pq with med priority [this might make us win later, maybe need to check 3 over]
-						}
-					}
-					else if(squares[i][j+1].getColor() == Color.red && squares[i][j+2].getColor() == Color.red) // it's the opponents
-					{
-						if(streak[i][j+1] == 3)
-						{
-							// add to pq with almost highest priority [this will make them not win]
-						}
-						else if(streak[i][j+1] >= 2)
-						{
-							// add to pq with med priority [this might piss them off a little]
-						}
-					}
-				}
-				else if(i < 3 && squares[i+1][j+1].getFilled() && squares[i+2][j+2].getFilled()) // check diagonal down/right if it exists and matters
-				{
-					if(squares[i+1][j+1].getColor() == Color.black && squares[i+2][j+2].getColor() == Color.black) // it's ours
-					{
-						if(streak[i+1][j+1] == 3)
-						{
-							// add to pq with highest priority [this will make us win]
-						}
-						else if(streak[i+1][j+1] >= 2)
-						{
-							// add to pq with med priority [this might make us win later, maybe need to check 3 over]
-						}
-					}
-					else if(squares[i+1][j+1].getColor() == Color.red && squares[i+2][j+2].getColor() == Color.red) // it's the opponents
-					{
-						if(streak[i+1][j+1] == 3)
-						{
-							// add to pq with almost highest priority [this will make them not win]
-						}
-						else if(streak[i+1][j+1] >= 2)
-						{
-							// add to pq with med priority [this might piss them off a little]
-						}
-					}
-				}
-				else if(i > 2 && squares[i-1][j+1].getFilled() && squares[i-2][j+2].getFilled()) // check diagonal up/right if it exists and matters
-				{
-					if(squares[i-1][j+1].getColor() == Color.black && squares[i-2][j+2].getColor() == Color.black) // it's ours
-					{
-						if(streak[i-1][j+1] == 3)
-						{
-							// add to pq with highest priority [this will make us win]
-						}
-						else if(streak[i-1][j+1] >= 2)
-						{
-							// add to pq with med priority [this might make us win later, maybe need to check 3 over]
-						}
-					}
-					else if(squares[i-1][j+1].getColor() == Color.red && squares[i-2][j+2].getColor() == Color.red) // it's the opponents
-					{
-						if(streak[i-1][j+1] == 3)
-						{
-							// add to pq with almost highest priority [this will make them not win]
-						}
-						else if(streak[i-1][j+1] >= 2)
-						{
-							// add to pq with med priority [this might piss them off a little]
+							
 						}
 					}
 				}
 			}
 			else if(0 < j && j < 6) // middle section
 			{
-				// do this shit
+				
 			}
 			else if(j == 6) // case at far right side
 			{
-				// and this, basically opposite of left case
+				
 			}
 		}
 	}
@@ -436,18 +347,14 @@ public class BoardGui extends JFrame
 				// move(some shit);
 			}
 			
-			// run this again after ai moves
-			if(AI)
-			{
 			// If four in a row are found, display winner and ask for new game
-				if(IsFour(squares[I][col]))
-				{
-					String winnerText = squares[I][col].getColor() == Color.red ? "Player One Wins!" : "Player Two Wins!";
-					player.setText(winnerText);
-					Object select = JOptionPane.showConfirmDialog(squares[I][col].getParent(), "Start a New Game?", winnerText, 0);
-					if((int)select == JOptionPane.YES_OPTION) startNewGame();
-					else System.exit(0);
-				}
+			if(IsFour(squares[I][col]))
+			{
+				String winnerText = squares[I][col].getColor() == Color.red ? "Player One Wins!" : "Player Two Wins!";
+				player.setText(winnerText);
+				Object select = JOptionPane.showConfirmDialog(squares[I][col].getParent(), "Start a New Game?", winnerText, 0);
+				if((int)select == JOptionPane.YES_OPTION) startNewGame();
+				else System.exit(0);
 			}
 		}
 
