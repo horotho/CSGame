@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.PriorityQueue;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
@@ -29,6 +30,7 @@ public class BoardGui extends JFrame
     public JLabel player;
     public JOptionPane chooseNewGame;
     public boolean AI;
+    public PriorityQueue<pqNode> aiMoves = new PriorityQueue();
     
 	public BoardGui()
 	{
@@ -192,6 +194,7 @@ public class BoardGui extends JFrame
 	// Moves for the AI
 	public void move()
 	{
+		//System.out.println("Ima Win");   //Sanity check
 		// Make an array containing streak lengths of each index
 		int[][] streak = new int[6][7];
 		for(int i = 0; i < 6; i++)
@@ -225,7 +228,9 @@ public class BoardGui extends JFrame
 					{
 						if(streak[i+1][j] == 3)
 						{
-							// add to pq with highest priority [this will make us win]
+							pqNode win = new pqNode(i, j, 10);
+							aiMoves.add(win);
+							System.out.println("Ima Win");
 						}
 						else if(streak[i+1][j] >= 2)
 						{
@@ -531,9 +536,9 @@ public class BoardGui extends JFrame
 				else System.exit(0);
 			}
 			
-			if(AI)
+			if(AI && !playerSwitch)
 			{
-				// move(some shit);
+				move();// move(some shit);
 			}
 			
 			// run this again after ai moves

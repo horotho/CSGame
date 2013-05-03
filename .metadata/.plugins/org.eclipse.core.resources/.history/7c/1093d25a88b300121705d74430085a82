@@ -1,0 +1,6 @@
+
+public class pqNode {
+	private int i;
+	private int j;
+	private int priority;
+}
