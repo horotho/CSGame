@@ -25,14 +25,13 @@ import javax.swing.KeyStroke;
 
 public class BoardGui extends JFrame
 {
-	public int ai_i, ai_j;
 	// Declaring public variables
+	public int ai_i, ai_j;
     public Square[][] squares = new Square[6][7];
     public boolean playerSwitch = true;
     public JLabel player;
     public JOptionPane chooseNewGame;
     public boolean AI;
-    //public PriorityQueue<pqNode> aiMoves = new PriorityQueue();
     
 	public BoardGui()
 	{
@@ -195,20 +194,7 @@ public class BoardGui extends JFrame
 
 	// Moves for the AI
 	public void move()
-	{
-		//System.out.println("Ima Win");   //Sanity check
-		// Make an array containing streak lengths of each index
-		/*
-		int[][] streak = new int[6][7];
-		for(int i = 0; i < 6; i++)
-		{
-			for(int j = 0; j < 7; j++)
-			{
-				streak[i][j] = howMany(squares[i][j]);
-			}
-		}
-		*/
-		
+	{	
 		// Get first available place in each column
 		int[] avalibleSpot = new int[7];
 		for(int j = 0; j < 7; j++)
@@ -277,252 +263,6 @@ public class BoardGui extends JFrame
 		squares[max_i][max_j].setFilled(true);
 		squares[max_i][max_j].paint();
 		return;
-		
-		// See what surrounds the available spots and determine move
-		/*for(int j = 0; j < 7; j++)
-		{
-			int i = avalibleSpot[j];
-			if(j == 0) // case at far left side
-			{
-				// checks what's below, diagonal to right up/down, right
-				if(i > 3) // check below if it matters and exists
-				{
-					if(squares[i+1][j].getColor() == Color.black && squares[i+2][j].getColor() == Color.black) // it's ours
-					{
-						if(streak[i+1][j] == 3)
-						{
-							pqNode win = new pqNode(i, j, 10);
-							aiMoves.add(win);
-							System.out.println("Ima Win");
-						}
-						else if(streak[i+1][j] >= 2)
-						{
-							// add to pq with med priority [this might make us win later]
-						}
-					}
-					else if(squares[i+1][j].getColor() == Color.red && squares[i+2][j].getColor() == Color.red) // it's the opponents
-					{
-						if(streak[i+1][j] == 3)
-						{
-							// add to pq with almost highest priority [this will make them not win]
-						}
-						else if(streak[i+1][j] >= 2)
-						{
-							// add to pq with med priority [this might piss them off a little]
-						}
-					}
-				}
-				else if(squares[i][j+1].getFilled() && squares[i][j+2].getFilled()) // check spot to the right exists and matters
-				{
-					if(squares[i][j+1].getColor() == Color.black && squares[i][j+2].getColor() == Color.black) // it's ours
-					{
-						if(streak[i][j+1] == 3)
-						{
-							// add to pq with highest priority [this will make us win]
-						}
-						else if(streak[i][j+1] >= 2)
-						{
-							// add to pq with med priority [this might make us win later, maybe need to check 3 over]
-						}
-					}
-					else if(squares[i][j+1].getColor() == Color.red && squares[i][j+2].getColor() == Color.red) // it's the opponents
-					{
-						if(streak[i][j+1] == 3)
-						{
-							// add to pq with almost highest priority [this will make them not win]
-						}
-						else if(streak[i][j+1] >= 2)
-						{
-							// add to pq with med priority [this might piss them off a little]
-						}
-					}
-				}
-				else if(i < 3 && squares[i+1][j+1].getFilled() && squares[i+2][j+2].getFilled()) // check diagonal down/right if it exists and matters
-				{
-					if(squares[i+1][j+1].getColor() == Color.black && squares[i+2][j+2].getColor() == Color.black) // it's ours
-					{
-						if(streak[i+1][j+1] == 3)
-						{
-							// add to pq with highest priority [this will make us win]
-						}
-						else if(streak[i+1][j+1] >= 2)
-						{
-							// add to pq with med priority [this might make us win later, maybe need to check 3 over]
-						}
-					}
-					else if(squares[i+1][j+1].getColor() == Color.red && squares[i+2][j+2].getColor() == Color.red) // it's the opponents
-					{
-						if(streak[i+1][j+1] == 3)
-						{
-							// add to pq with almost highest priority [this will make them not win]
-						}
-						else if(streak[i+1][j+1] >= 2)
-						{
-							// add to pq with med priority [this might piss them off a little]
-						}
-					}
-				}
-				else if(i > 2 && squares[i-1][j+1].getFilled() && squares[i-2][j+2].getFilled()) // check diagonal up/right if it exists and matters
-				{
-					if(squares[i-1][j+1].getColor() == Color.black && squares[i-2][j+2].getColor() == Color.black) // it's ours
-					{
-						if(streak[i-1][j+1] == 3)
-						{
-							// add to pq with highest priority [this will make us win]
-						}
-						else if(streak[i-1][j+1] >= 2)
-						{
-							// add to pq with med priority [this might make us win later, maybe need to check 3 over]
-						}
-					}
-					else if(squares[i-1][j+1].getColor() == Color.red && squares[i-2][j+2].getColor() == Color.red) // it's the opponents
-					{
-						if(streak[i-1][j+1] == 3)
-						{
-							// add to pq with almost highest priority [this will make them not win]
-						}
-						else if(streak[i-1][j+1] >= 2)
-						{
-							// add to pq with med priority [this might piss them off a little]
-						}
-					}
-				}
-			}
-			else if(0 < j && j < 6) // middle section
-			{
-				// checks in all the directions except above
-				if(i > 3) // check below if it matters and exists
-				{
-					if(squares[i+1][j].getColor() == Color.black && squares[i+2][j].getColor() == Color.black) // it's ours
-					{
-						if(streak[i+1][j] == 3)
-						{
-							// add to pq with highest priority [this will make us win]
-						}
-						else if(streak[i+1][j] >= 2)
-						{
-							// add to pq with med priority [this might make us win later]
-						}
-					}
-					else if(squares[i+1][j].getColor() == Color.red && squares[i+2][j].getColor() == Color.red) // it's the opponents
-					{
-						if(streak[i+1][j] == 3)
-						{
-							// add to pq with almost highest priority [this will make them not win]
-						}
-						else if(streak[i+1][j] >= 2)
-						{
-							// add to pq with med priority [this might piss them off a little]
-						}
-					}
-				}
-				// do this shit
-			}
-			else if(j == 6) // case at far right side
-			{
-				// checks below, left, diagonally up and down to left; basically far left case except looks left instead of right
-				if(i > 3) // check below if it matters and exists
-				{
-					if(squares[i+1][j].getColor() == Color.black && squares[i+2][j].getColor() == Color.black) // it's ours
-					{
-						if(streak[i+1][j] == 3)
-						{
-							// add to pq with highest priority [this will make us win]
-						}
-						else if(streak[i+1][j] >= 2)
-						{
-							// add to pq with med priority [this might make us win later]
-						}
-					}
-					else if(squares[i+1][j].getColor() == Color.red && squares[i+2][j].getColor() == Color.red) // it's the opponents
-					{
-						if(streak[i+1][j] == 3)
-						{
-							// add to pq with almost highest priority [this will make them not win]
-						}
-						else if(streak[i+1][j] >= 2)
-						{
-							// add to pq with med priority [this might piss them off a little]
-						}
-					}
-				}
-				else if(squares[i][j-1].getFilled() && squares[i][j-2].getFilled()) // check spot to the left exists and matters
-				{
-					if(squares[i][j-1].getColor() == Color.black && squares[i][j-2].getColor() == Color.black) // it's ours
-					{
-						if(streak[i][j-1] == 3)
-						{
-							// add to pq with highest priority [this will make us win]
-						}
-						else if(streak[i][j-1] >= 2)
-						{
-							// add to pq with med priority [this might make us win later, maybe need to check 3 over]
-						}
-					}
-					else if(squares[i][j-1].getColor() == Color.red && squares[i][j-2].getColor() == Color.red) // it's the opponents
-					{
-						if(streak[i][j-1] == 3)
-						{
-							// add to pq with almost highest priority [this will make them not win]
-						}
-						else if(streak[i][j-1] >= 2)
-						{
-							// add to pq with med priority [this might piss them off a little]
-						}
-					}
-				}
-				else if(i < 3 && squares[i+1][j-1].getFilled() && squares[i+2][j-2].getFilled()) // check diagonal down/left if it exists and matters
-				{
-					if(squares[i+1][j-1].getColor() == Color.black && squares[i+2][j-2].getColor() == Color.black) // it's ours
-					{
-						if(streak[i+1][j-1] == 3)
-						{
-							// add to pq with highest priority [this will make us win]
-						}
-						else if(streak[i+1][j-1] >= 2)
-						{
-							// add to pq with med priority [this might make us win later, maybe need to check 3 over]
-						}
-					}
-					else if(squares[i+1][j-1].getColor() == Color.red && squares[i+2][j-2].getColor() == Color.red) // it's the opponents
-					{
-						if(streak[i+1][j-1] == 3)
-						{
-							// add to pq with almost highest priority [this will make them not win]
-						}
-						else if(streak[i+1][j-1] >= 2)
-						{
-							// add to pq with med priority [this might piss them off a little]
-						}
-					}
-				}
-				else if(i > 2 && squares[i-1][j-1].getFilled() && squares[i-2][j-2].getFilled()) // check diagonal up/left if it exists and matters
-				{
-					if(squares[i-1][j-1].getColor() == Color.black && squares[i-2][j-2].getColor() == Color.black) // it's ours
-					{
-						if(streak[i-1][j-1] == 3)
-						{
-							// add to pq with highest priority [this will make us win]
-						}
-						else if(streak[i-1][j-1] >= 2)
-						{
-							// add to pq with med priority [this might make us win later, maybe need to check 3 over]
-						}
-					}
-					else if(squares[i-1][j-1].getColor() == Color.red && squares[i-2][j-2].getColor() == Color.red) // it's the opponents
-					{
-						if(streak[i-1][j-1] == 3)
-						{
-							// add to pq with almost highest priority [this will make them not win]
-						}
-						else if(streak[i-1][j-1] >= 2)
-						{
-							// add to pq with med priority [this might piss them off a little]
-						}
-					}
-				}
-			}
-		}*/
 	}
 	
 	public int howMany(int I, int J, Color color) 
@@ -627,9 +367,9 @@ public class BoardGui extends JFrame
 			
 			if(AI && !playerSwitch)
 			{
-				move();// move(some shit);
+				move();
+				player.setText(playerSwitch ? "Player Two" : "Player One");
 				playerSwitch = !playerSwitch;
-				//System.out.println("poop");
 				for(i = 0; i < 6; i++)
 				{
 					for(int j = 0; j < 7; j++)
