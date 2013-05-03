@@ -140,4 +140,9 @@ public class Square extends JPanel
 		return color;
 	}
 
+	public void setFilled(boolean fill)
+	{
+		this.filled = fill;
+	}
+
 }

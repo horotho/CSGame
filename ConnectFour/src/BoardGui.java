@@ -22,15 +22,17 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
 
+
 public class BoardGui extends JFrame
 {
+	public int ai_i, ai_j;
 	// Declaring public variables
     public Square[][] squares = new Square[6][7];
     public boolean playerSwitch = true;
     public JLabel player;
     public JOptionPane chooseNewGame;
     public boolean AI;
-    public PriorityQueue<pqNode> aiMoves = new PriorityQueue();
+    //public PriorityQueue<pqNode> aiMoves = new PriorityQueue();
     
 	public BoardGui()
 	{
@@ -190,12 +192,13 @@ public class BoardGui extends JFrame
 		}
 	return false;
 	}
-	
+
 	// Moves for the AI
 	public void move()
 	{
 		//System.out.println("Ima Win");   //Sanity check
 		// Make an array containing streak lengths of each index
+		/*
 		int[][] streak = new int[6][7];
 		for(int i = 0; i < 6; i++)
 		{
@@ -204,19 +207,79 @@ public class BoardGui extends JFrame
 				streak[i][j] = howMany(squares[i][j]);
 			}
 		}
+		*/
 		
 		// Get first available place in each column
 		int[] avalibleSpot = new int[7];
 		for(int j = 0; j < 7; j++)
 		{
-			for(int i = 0; !squares[i][j].getFilled(); i++)
+			for(int i = 0; i < 6 && !squares[i][j].getFilled() ; i++)
 			{
 				avalibleSpot[j] = i;
 			}
 		}
+
+
+		for(int j = 0; j < 7; j++)
+		{
+			int i = avalibleSpot[j];
+			if(squares[i][j].getFilled())
+				continue;
+			if(howMany(i, j, Color.black) == 4)
+			{
+				ai_i = i; ai_j = j;
+            	squares[i][j].setFilled(true);
+				squares[i][j].setColor(Color.black);
+				squares[i][j].paint();
+				return;
+			}
+		}
+
+		for(int j = 0; j < 7; j++)
+		{
+			int i = avalibleSpot[j];
+			if(squares[i][j].getFilled())
+				continue;
+			System.out.println("Their four i: " + i + " j: " + j);
+			System.out.println("howMany: " + howMany(i, j, Color.red));
+			if(howMany(i, j, Color.red) == 4)
+			{
+				ai_i = i; ai_j = j;
+            	squares[i][j].setFilled(true);
+				squares[i][j].setColor(Color.black);
+				squares[i][j].paint();
+				return;
+			}
+            squares[i][j].setFilled(false);
+		}
+
+        int max = 0, max_i = avalibleSpot[3], max_j = 3, how_many = 0;
+
+		for(int j = 0; j < 7; j++)
+		{
+			int i = avalibleSpot[j];
+			if(squares[i][j].getFilled())
+				continue;
+			how_many = howMany(i, j, Color.black);
+			if(how_many > max)
+			{
+				System.out.println("found longest");
+				max = how_many;
+				max_i = i;
+				max_j = j;
+			}
+            squares[i][j].setFilled(false);
+		}
+
+		ai_i = max_i; ai_j = max_j;
+        squares[max_i][max_j].setFilled(true);
+		squares[max_i][max_j].setColor(Color.black);
+		squares[max_i][max_j].setFilled(true);
+		squares[max_i][max_j].paint();
+		return;
 		
 		// See what surrounds the available spots and determine move
-		for(int j = 0; j < 7; j++)
+		/*for(int j = 0; j < 7; j++)
 		{
 			int i = avalibleSpot[j];
 			if(j == 0) // case at far left side
@@ -459,15 +522,15 @@ public class BoardGui extends JFrame
 					}
 				}
 			}
-		}
+		}*/
 	}
 	
-	public int howMany(Square new_square) 
+	public int howMany(int I, int J, Color color) 
 	{
 		// Collects information about the square that was just placed
-		Color color = new_square.getColor();
-		int I = new_square.getRow();
-		int J = new_square.getCol();
+		//Color color = new_square.getColor();
+		//int I = new_square.getRow();
+		//int J = new_square.getCol();
 		int howMany = 0;
 
 		// A nested for loop that checks all adjacent squares for a square of the same color. The system will then know the maximum number
@@ -482,7 +545,7 @@ public class BoardGui extends JFrame
                 && squares[i][j].getFilled()
 				&& color == squares[i][j].getColor() )
 				{
-					howMany = 2;
+					howMany = (howMany < 2) ? 2 : howMany;
 					int next_i = I + 2*(i-I);
 					int next_j = J + 2*(j-J);
 
@@ -491,7 +554,7 @@ public class BoardGui extends JFrame
                 	&& squares[next_i][next_j].getFilled()
 					&& color == squares[next_i][next_j].getColor() )
 					{
-						howMany = 3;
+						howMany = (howMany < 3) ? 3 : howMany;
 						int next_next_i = I + 3*(i-I);
 						int next_next_j = J + 3*(j-J);
 
@@ -507,7 +570,7 @@ public class BoardGui extends JFrame
                 			&& squares[prev_i][prev_j].getFilled()
 							&& color == squares[prev_i][prev_j].getColor() ) )
 						{
-							howMany = 4;
+							return 4;
 						}
 					}
 				}
@@ -565,17 +628,27 @@ public class BoardGui extends JFrame
 			if(AI && !playerSwitch)
 			{
 				move();// move(some shit);
+				playerSwitch = !playerSwitch;
+				//System.out.println("poop");
+				for(i = 0; i < 6; i++)
+				{
+					for(int j = 0; j < 7; j++)
+					{
+						if(!squares[i][j].getFilled())
+						squares[i][j].setColor(playerSwitch ? Color.red : Color.black);
+					}
+				}
 			}
 			
 			// run this again after ai moves
 			if(AI)
 			{
 			// If four in a row are found, display winner and ask for new game
-				if(IsFour(squares[I][col]))
+				if(IsFour(squares[ai_i][ai_j]))
 				{
-					String winnerText = squares[I][col].getColor() == Color.red ? "Player One Wins!" : "Player Two Wins!";
+					String winnerText = squares[ai_i][ai_j].getColor() == Color.red ? "Player One Wins!" : "Player Two Wins!";
 					player.setText(winnerText);
-					Object select = JOptionPane.showConfirmDialog(squares[I][col].getParent(), "Start a New Game?", winnerText, 0);
+					Object select = JOptionPane.showConfirmDialog(squares[ai_i][ai_j].getParent(), "Start a New Game?", winnerText, 0);
 					if((int)select == JOptionPane.YES_OPTION) startNewGame();
 					else System.exit(0);
 				}
