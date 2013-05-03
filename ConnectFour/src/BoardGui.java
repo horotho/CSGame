@@ -327,6 +327,32 @@ public class BoardGui extends JFrame
 			}
 			else if(0 < j && j < 6) // middle section
 			{
+				// checks in all the directions except above
+				if(i > 3) // check below if it matters and exists
+				{
+					if(squares[i+1][j].getColor() == Color.black && squares[i+2][j].getColor() == Color.black) // it's ours
+					{
+						if(streak[i+1][j] == 3)
+						{
+							// add to pq with highest priority [this will make us win]
+						}
+						else if(streak[i+1][j] >= 2)
+						{
+							// add to pq with med priority [this might make us win later]
+						}
+					}
+					else if(squares[i+1][j].getColor() == Color.red && squares[i+2][j].getColor() == Color.red) // it's the opponents
+					{
+						if(streak[i+1][j] == 3)
+						{
+							// add to pq with almost highest priority [this will make them not win]
+						}
+						else if(streak[i+1][j] >= 2)
+						{
+							// add to pq with med priority [this might piss them off a little]
+						}
+					}
+				}
 				// do this shit
 			}
 			else if(j == 6) // case at far right side
